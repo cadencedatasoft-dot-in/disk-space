@@ -1,3 +1,4 @@
+/*
 use std::env;
 use std::error;
 use std::fs::{self, File};
@@ -250,3 +251,4 @@ impl TempDir {
         &self.0
     }
 }
+*/
