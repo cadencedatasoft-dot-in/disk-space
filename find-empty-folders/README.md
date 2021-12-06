@@ -1,6 +1,6 @@
 # find empty folders
 
-Locate and delete empty folders and duplicate files on your Mac, Windows, or Linux machines. In a non intrusivenon-intrusive and destructive way.
+Locate and delete empty folders and duplicate files on your Mac, Windows, or Linux machines. In a non intrusivenon-intrusive and destructive way. Given the path, this utility generates an executable script to delete empty directories or duplicate files depending on set flag.
 
 USAGE: find-empty-folders.exe [FLAGS] [OPTIONS] [dirs]...
 
