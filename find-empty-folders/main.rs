@@ -4,6 +4,8 @@
 */
 
 
+//pub mod filetype;
+
 use std::convert::TryInto;
 use std::error::Error;
 use std::fs;
@@ -19,6 +21,9 @@ use std::collections::HashMap;
 use num256::uint256::Uint256;
 use std::time::{Instant};
 
+#[path = "./filetype.rs"]
+mod filetype;
+
 type Result<T> = result::Result<T, Box<dyn Error>>;
 
 macro_rules! err {
@@ -33,6 +38,46 @@ static DEFAULT_EXT: &str = "sh";
 static DEFAULT_EXT: &str = "cmd";
 
 use indicatif::{ProgressBar, ProgressStyle};
+
+// struct Stats { 
+//     audio_files: u64,
+//     compressed_files: u64,
+//     media_files: u64,
+//     db_files: u64, 
+//     email_files: u64,
+//     exec_files: u64, 
+//     font_files: u64, 
+//     image_files: u64, 
+//     internet_files: u64, 
+//     presentation_files: u64, 
+//     program_files: u64, 
+//     spreadsheet_files: u64, 
+//     sys_files: u64, 
+//     video_files: u64, 
+//     wordprocessor_files: u64, 
+// }
+
+// impl Stats {
+//     pub fn new() -> Self {
+//         Stats{
+//             audio_files: 0,
+//             compressed_files: 0,
+//             media_files: 0,
+//             db_files: 0, 
+//             email_files: 0,
+//             exec_files: 0, 
+//             font_files: 0, 
+//             image_files: 0, 
+//             internet_files: 0, 
+//             presentation_files: 0, 
+//             program_files: 0, 
+//             spreadsheet_files: 0, 
+//             sys_files: 0, 
+//             video_files: 0, 
+//             wordprocessor_files: 0,         
+//         }
+//     }
+// }
 
 struct ReclaimStorage {
     unique_files0: HashMap<u64, Vec<DirEntry>>,
@@ -52,7 +97,10 @@ impl ReclaimStorage {
             duplicate_files: HashMap::new(),
             empty_folders: Vec::new(),
             files_processed: 0,
-            possible_dup_files: 0,
+            //While maintaining stats, possible_dup_files get decremented first, and then it gets incremented. 
+            //So let's init this to 1, otherwise, the application may panic. 
+            //This issue is for the first decrement only.            
+            possible_dup_files: 1,
             confirmed_dups: 0,
             total_reclaim: 0,            
         }
@@ -182,7 +230,7 @@ impl ReclaimStorage {
     }    
 
     #[inline]
-    fn update_duplicate_list0(&mut self, size: u64, dent: DirEntry) -> (){
+    fn update_duplicate_list0 (&mut self, size: u64, dent: DirEntry) -> (){
         if self.unique_files0.contains_key(&size){
             self.unique_files0.get_mut(&size).unwrap().push(dent);
         }else{
@@ -192,10 +240,10 @@ impl ReclaimStorage {
         }
     }
 
-    fn traverse_path(&mut self, args: &Args) -> Result<()>
+    fn traverse_path(&mut self, args: &Args, stats: &mut filetype::FileTypes) -> Result<()>
     {
         for dir in &args.dirs {
-            self.find_duplicate_files(args, dir).unwrap();
+            self.find_duplicate_files(args, dir, stats).unwrap();
         }
         Ok(())
     }
@@ -204,6 +252,7 @@ impl ReclaimStorage {
         &mut self,
         args: &Args,
         dir: &Path,
+        stats: &mut filetype::FileTypes
     ) -> Result<()>
     {
         let pb = ProgressBar::new_spinner();
@@ -231,30 +280,33 @@ impl ReclaimStorage {
                     if ele.len() > 1 {
                         let mut vsingles:  Vec<Uint256> = Vec::new();
                         for de in ele.to_vec(){
-                            {
-                                match File::open( de.path(), ) {
-                                    Err(_err) => {
-                                        //eprintln!("{}", err);
-                                    },
-                                    Ok(h) =>{
-                                        let r = BufReader::new(h);
-                                        let d = sha256_digest(r)?;
-                                        let ui256_d =  MyUtil::bytes_2uint256(d);
+                            match File::open( de.path(), ) {
+                                Err(_err) => {
+                                    //eprintln!("{}", err);
+                                },
+                                Ok(h) =>{
+                                    let r = BufReader::new(h);
+                                    let d = sha256_digest(r)?;
+                                    let ui256_d =  MyUtil::bytes_2uint256(d);
+                                    let ext: String = match de.path().extension(){
+                                        Some(v) => v.to_str().unwrap().to_string(),
+                                        None => String::from("noext"),
+                                    };
 
-                                        if self.duplicate_files.contains_key(&ui256_d){
-                                            self.duplicate_files.get_mut(&ui256_d).unwrap().push(de);
-                                            //We need this only here because that is what can be reclaimed
-                                            self.total_reclaim += siz;
-                                            self.confirmed_dups += 1;
-                                        }else{
-                                            let mut newlst: Vec<DirEntry> = Vec::new();
-                                            newlst.push(de);
-                                            self.duplicate_files.insert(ui256_d.clone(), newlst);
-                                            vsingles.push(ui256_d)
-                                        }
+                                    if self.duplicate_files.contains_key(&ui256_d){
+                                        self.duplicate_files.get_mut(&ui256_d).unwrap().push(de);
+                                        //We need this only here because that is what can be reclaimed
+                                        self.total_reclaim += siz;
+                                        self.confirmed_dups += 1;
+                                        stats.inc(ext);
+                                    }else{
+                                        let mut newlst: Vec<DirEntry> = Vec::new();
+                                        newlst.push(de);
+                                        self.duplicate_files.insert(ui256_d.clone(), newlst);
+                                        vsingles.push(ui256_d);
                                     }
-                                };
-                            }            
+                                }
+                            };
                         }
                         //Remove single entries, saves memory
                         self.remove_single_entries(vsingles);
@@ -276,11 +328,9 @@ impl ReclaimStorage {
 
     fn find_duplicates(&mut self, args: &Args, dir: &Path, minfilesize: u64, pb: &ProgressBar) {
         for result in args.walkdir(dir) {
-            let dent = match result {
-                Ok(dent) => dent,
-                Err(_err) => {
-                    continue;
-                }
+            let dent = match dir_entry(result) {
+                Some(value) => value,
+                None => continue,
             };
 
             if dent.path().is_file() {
@@ -338,6 +388,7 @@ impl ReclaimStorage {
         for dig in vsingles{
             let lst = self.duplicate_files.get_mut(&dig).unwrap();
             let lstlen:u64 = lst.len().try_into().unwrap();
+
             if lstlen == 1 {
                 self.possible_dup_files -= 1;
                 self.duplicate_files.remove(&dig);
@@ -346,13 +397,14 @@ impl ReclaimStorage {
         }
     }
 
-    fn show_stats(&self, args: &Args,) -> () {
+    fn show_stats(&self, args: &Args, stats: &mut filetype::FileTypes) -> () {
         if args.dupfiles {
             writeln!(io::stdout(), "Total no. of files processes: {:?}", self.files_processed).unwrap();
             writeln!(io::stdout(), "Total no. of duplicate files: {:?}", self.confirmed_dups).unwrap();
             writeln!(io::stdout(), "Total amount of disk space can be reclaimed: {:?}MB", self.total_reclaim/(1024*1024)).unwrap();
             writeln!(io::stdout(), "To reclaimed the disk space run this generated script file \"deleteduplicates.{}\"\n. \
             You may review the script before before running it", DEFAULT_EXT).unwrap();
+            self.show_filetype_stats(args, stats);
         }
         if args.emptydirs {
             writeln!(io::stdout(), "Total no. of folders processes: {:?}", self.files_processed).unwrap();
@@ -361,7 +413,31 @@ impl ReclaimStorage {
             You may review the script before before running it", DEFAULT_EXT).unwrap();            
         }
     }
+
+    fn show_filetype_stats(&self, _args: &Args, stats: &filetype::FileTypes){
+        write!(io::stdout(), "The distribution of duplicates looks like this: ").unwrap();
+        for (k, v) in &stats.known_cat{
+            if *v != 0 {
+                write!(io::stdout(), " {}: {:.3}%,", k,  (*v as f64)/(self.confirmed_dups as f64) * 100.0).unwrap();
+            }
+        }
+
+        if stats.others > 0 {
+            write!(io::stdout(), " other_files: {:.3}%", (stats.others as f64)/(self.confirmed_dups as f64) * 100.0).unwrap();
+        }
+    }
 }
+
+fn dir_entry (result: std::result::Result<DirEntry, walkdir::Error>) -> Option<DirEntry> {
+    let dent: DirEntry = match result {
+        Ok(dent1) => dent1,
+        Err(_err) => {
+            return None;
+        }
+    };
+    Some(dent)
+}
+
 struct MyUtil;
 
 impl MyUtil {
@@ -412,8 +488,9 @@ fn try_main() -> Result<()> {
 
 
     let mut r = ReclaimStorage::new();
+    let s = &mut filetype::FileTypes::new();
 
-    r.traverse_path(&args).unwrap();
+    r.traverse_path(&args, s).unwrap();
  
     if args.dispdup {
         r.show_duplicates();
@@ -427,7 +504,7 @@ fn try_main() -> Result<()> {
         r.gen_delempty_batch(&args)
     }
 
-    r.show_stats(&args);
+    r.show_stats(&args, s);
 
     if args.timeit {
         let since = Instant::now().duration_since(start);

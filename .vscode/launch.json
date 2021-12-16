@@ -17,7 +17,7 @@
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceFolder}/target/debug/find-empty-folders.exe",
-            "args": ["--timeit", "--dupfiles", "C:\\Users\\Anand\\Desktop\\test"],
+            "args": ["--timeit", "--dupfiles", "--dup_minsize=0", "C:\\Users\\Anand\\Desktop"],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [],

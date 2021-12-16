@@ -8,3 +8,8 @@ Cargo.lock
 scratch*
 bench_large/huge
 tmp
+find-empty-folders/deleteduplicates.cmd
+find-empty-folders/delemptyfolders.cmd
+deleteduplicates.cmd
+.vscode/launch.json
+.vscode/launch.json
