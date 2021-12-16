@@ -1,3 +1,8 @@
+/*
+ *                  Cadence Data Soft Pvt. Ltd.
+ *
+*/
+
 use std::collections::HashMap;
 
 pub struct FileTypes {
@@ -5,21 +10,6 @@ pub struct FileTypes {
     pub uft: HashMap<String, u64>,
     pub known_types: HashMap<String, (Vec<String>, u64)>,
     pub known_cat: HashMap<String, u64>,
-    // audio_files: Vec<&'a str>,
-    // compressed_files: Vec<&'a str>,
-    // media_files: Vec<&'a str>,
-    // db_files: Vec<&'a str>,
-    // email_files: Vec<&'a str>,
-    // exec_files: Vec<&'a str>,
-    // font_files: Vec<&'a str>,
-    // image_files: Vec<&'a str>,
-    // internet_files: Vec<&'a str>,
-    // presentation_files: Vec<&'a str>,
-    // program_files: Vec<&'a str>,
-    // spreadsheet_files: Vec<&'a str>,
-    // sys_files: Vec<&'a str>,
-    // video_files: Vec<&'a str>,
-    // wordprocessor_files: Vec<&'a str>,
     pub others: u64,
 }
 
