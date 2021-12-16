@@ -39,46 +39,6 @@ static DEFAULT_EXT: &str = "cmd";
 
 use indicatif::{ProgressBar, ProgressStyle};
 
-// struct Stats { 
-//     audio_files: u64,
-//     compressed_files: u64,
-//     media_files: u64,
-//     db_files: u64, 
-//     email_files: u64,
-//     exec_files: u64, 
-//     font_files: u64, 
-//     image_files: u64, 
-//     internet_files: u64, 
-//     presentation_files: u64, 
-//     program_files: u64, 
-//     spreadsheet_files: u64, 
-//     sys_files: u64, 
-//     video_files: u64, 
-//     wordprocessor_files: u64, 
-// }
-
-// impl Stats {
-//     pub fn new() -> Self {
-//         Stats{
-//             audio_files: 0,
-//             compressed_files: 0,
-//             media_files: 0,
-//             db_files: 0, 
-//             email_files: 0,
-//             exec_files: 0, 
-//             font_files: 0, 
-//             image_files: 0, 
-//             internet_files: 0, 
-//             presentation_files: 0, 
-//             program_files: 0, 
-//             spreadsheet_files: 0, 
-//             sys_files: 0, 
-//             video_files: 0, 
-//             wordprocessor_files: 0,         
-//         }
-//     }
-// }
-
 struct ReclaimStorage {
     unique_files0: HashMap<u64, Vec<DirEntry>>,
     duplicate_files: HashMap<Uint256, Vec<DirEntry>>,
