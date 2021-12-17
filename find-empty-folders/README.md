@@ -23,6 +23,7 @@ ARGS: ...
 
 Example:
 find-empty-folders.exe --timeit --dupfiles --dup_minsize=25 d:\projects
+
 Searching for duplicate files...
 Total no. of files processes: 552636
 Total no. of duplicate files: 33
