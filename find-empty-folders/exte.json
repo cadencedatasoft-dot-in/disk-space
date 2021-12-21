@@ -1,4 +1,5 @@
 {
+    "ft": {
     "aif":0,
     "cda":0,
     "mid":0,
@@ -149,4 +150,201 @@
     "tex":0,
     "txt":0,
     "wpd":0
+    },
+    "known_types": {
+       "audio_files":[[
+       "aif",
+       "cda",
+       "mid",
+       "midi",
+       "mp3",
+       "mpa",
+       "ogg",
+       "wav",
+       "wpl",
+       "wma"
+        ], 0],
+       "compressed_files":[[
+       "7z",
+       "arj",
+       "deb",
+       "pkg",
+       "rar",
+       "rpm",
+       "tar.gz",
+       "z",
+       "zip"
+        ], 0],
+        "media_files":[ [     
+       "bin",
+       "dmg",
+       "iso",
+       "toast",
+       "vcd"
+        ], 0],
+        "db_files":[ [ 
+       "csv",
+       "dat",
+       "db",
+       "dbf",
+       "log",
+       "mdb",
+       "sav",
+       "sql",
+       "tar",
+       "xml"
+        ], 0],
+        "email_files":[ [
+       "email",
+       "eml",
+       "emlx",
+       "msg",
+       "oft",
+       "ost",
+       "pst",
+       "vcf"
+        ], 0],
+        "exec_files":[ [    
+       "apk",
+       "bat",
+       "bin",
+       "pl",
+       "cgi",    
+       "com",
+       "exe",
+       "gadget",
+       "jar",
+       "msi",
+       "py",
+       "wsf"
+        ], 0],
+        "font_files":[ [
+       "fnt",
+       "fon",
+       "otf",
+       "ttf"
+        ], 0],
+        "image_files":[ [
+       "ai",
+       "bmp",
+       "gif",
+       "ico",
+       "jpeg",
+       "jpg",
+       "png",
+       "ps",
+       "psd",
+       "svg",
+       "tif",
+       "tiff"
+        ], 0],
+        "internet_files":[ [
+       "asp",
+       "aspx",    
+       "cer",
+       "cfm",
+       "pl",
+       "cgi",    
+       "css",
+       "htm",
+       "html",    
+       "js",
+       "jsp",
+       "part",
+       "php",
+       "py",
+       "rss",
+       "xhtml"
+        ], 0],
+        "presentation_files":[ [
+       "key",
+       "odp",
+       "pps",
+       "ppt",
+       "pptx"
+        ], 0],
+        "program_files":[ [
+       "c",
+       "cpp",
+       "cgi",
+       "pl",
+       "class",
+       "cpp",
+       "cs",
+       "h",
+       "java",
+       "php",
+       "py",
+       "sh",
+       "swift",
+       "vb"
+        ], 0],
+        "spreadsheet_files":[ [
+       "ods",
+       "xls",
+       "xlsm",
+       "xlsx"
+        ], 0],
+        "sys_files":[ [
+       "bak",
+       "cab",
+       "cfg",
+       "cpl",
+       "cur",
+       "dll",
+       "dmp",
+       "drv",
+       "icns",
+       "ico",
+       "ini",
+       "lnk",
+       "msi",
+       "sys",
+       "tmp"
+        ], 0],
+        "video_files":[ [
+       "3g2",
+       "3gp",
+       "avi",
+       "flv",
+       "h264",
+       "m4v",
+       "mkv",
+       "mov",
+       "mp4",
+       "mpg",
+       "mpeg",
+       "rm",
+       "swf",
+       "vob",
+       "wmv"
+        ], 0],
+        "wordprocessor_files":[ [
+       "doc",
+       "docx",
+       "odt",
+       "pdf",
+       "rtf",
+       "tex",
+       "txt",
+       "wpd"
+        ], 0]
+    },
+    "known_cat": {
+        "audio_files":0,
+        "compressed_files":0,
+        "media_files":0,
+        "db_files":0,
+        "email_files":0,
+        "exec_files":0,
+        "font_files":0,
+        "image_files":0,
+        "internet_files":0,
+        "presentation_files":0,
+        "program_files":0,
+        "spreadsheet_files":0,
+        "sys_files":0,
+        "video_files":0,
+        "wordprocessor_files":0
+    }
 }
