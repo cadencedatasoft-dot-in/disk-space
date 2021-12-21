@@ -24,6 +24,9 @@ use std::time::{Instant};
 #[path = "./filetype.rs"]
 mod filetype;
 
+#[path = "./jsontypes.rs"]
+mod jsontypes;
+
 type Result<T> = result::Result<T, Box<dyn Error>>;
 
 macro_rules! err {
@@ -446,6 +449,7 @@ fn try_main() -> Result<()> {
         }        
     }
 
+    //let mut _n = jsontypes::Jsontypes::new();
 
     let mut r = ReclaimStorage::new();
     let s = &mut filetype::FileTypes::new();

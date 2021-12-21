@@ -3,7 +3,10 @@
  *
 */
 
-use std::collections::HashMap;
+use std::{collections::HashMap, path::Path};
+
+#[path = "./jsontypes.rs"]
+mod jsontypes;
 
 pub struct FileTypes {
     pub ft: HashMap<String, u64>,
@@ -16,7 +19,8 @@ pub struct FileTypes {
 impl<'a> FileTypes {
     pub fn new() -> Self {
         FileTypes{
-            ft: HashMap::from([
+            //ft: jsontypes::Jsontypes::new(Path::new("D:\\Projects\\RustProgramming\\disk-space\\find-empty-folders\\exte.json").as_os_str()).ft /*HashMap::from([
+            ft: jsontypes::Jsontypes::new(Path::new("exte.json").as_os_str()).ft /*HashMap::from([
             //Audio file formats by file extensions
             (String::from("aif"), 0),
             (String::from("cda"), 0),
@@ -179,7 +183,7 @@ impl<'a> FileTypes {
             (String::from("tex"), 0),
             (String::from("txt"), 0),
             (String::from("wpd"), 0),
-            ]),
+            ])*/,
             uft: HashMap::new(),
             known_types: HashMap::from([
                 (String::from("audio_files"), (vec![
