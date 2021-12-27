@@ -106,6 +106,7 @@
     "sh":0,
     "swift":0,
     "vb":0,
+    "rs":0,
 
     "ods":0,
     "xls":0,
@@ -277,7 +278,8 @@
        "py",
        "sh",
        "swift",
-       "vb"
+       "vb",
+       "rs"
         ], 0],
         "spreadsheet_files":[ [
        "ods",

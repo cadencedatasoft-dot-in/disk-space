@@ -385,6 +385,8 @@ impl ReclaimStorage {
         if stats.others > 0 {
             write!(io::stdout(), " other_files: {:.3}%", (stats.others as f64)/(self.confirmed_dups as f64) * 100.0).unwrap();
         }
+
+        writeln!(io::stdout(), "").unwrap();
     }
 }
 

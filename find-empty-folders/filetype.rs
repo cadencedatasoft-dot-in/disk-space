@@ -18,7 +18,7 @@ pub struct FileTypes {
 
 impl FileTypes {
     pub fn new() -> Self {
-        let jt = jsontypes::Jsontypes::new(Path::new("D:\\Projects\\RustProgramming\\disk-space\\find-empty-folders\\exte.json").as_os_str());
+        let jt = jsontypes::Jsontypes::new(Path::new("exte.json").as_os_str());
         FileTypes{
             ft: jt.ft,
             uft: HashMap::new(),
