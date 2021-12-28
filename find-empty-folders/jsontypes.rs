@@ -32,7 +32,7 @@ impl Jsontypes {
             }
         }
 
-    pub fn read_exts(path: &OsStr) -> Option<(HashMap<String, u64>, HashMap<String, (Vec<String>, u64)>, HashMap<String, u64>)> {
+    fn read_exts(path: &OsStr) -> Option<(HashMap<String, u64>, HashMap<String, (Vec<String>, u64)>, HashMap<String, u64>)> {
         let extensions: Value;
 
         match fs::read_to_string(path){

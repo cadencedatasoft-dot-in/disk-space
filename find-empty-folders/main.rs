@@ -23,6 +23,7 @@ mod filetype;
 
 #[path = "./jsontypes.rs"]
 mod jsontypes;
+mod smachine;
 
 type Result<T> = result::Result<T, Box<dyn Error>>;
 
@@ -425,6 +426,13 @@ impl MyUtil {
 }
 
 fn main() {
+    // let  s = &mut smachine::Sm::new();
+    // let  p1 = &mut String::from("");
+    // let  p2 = &mut String::from("");
+
+    // let ret = s.s_transitions[0][0](s, p1, p2);
+    // let ret1 = s.s_transitions[0][1](s, p1, p2);
+
     if let Err(err) = try_main() {
         eprintln!("{}", err);
         process::exit(1);
