@@ -17,10 +17,20 @@
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceFolder}/target/debug/find-empty-folders.exe",
-            "args": ["--timeit", "--dupfiles", "--dup_minsize=0", "C:\\Users\\Anand\\Desktop"],
+            "args": ["--timeit", "--dupfiles", "--dup_minsize=0", "C:\\Users\\Anand\\Desktop"], 
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [],
-        }      
+        },
+        {
+            "name": "(Linux) Launch",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/find-empty-folders",
+            "args": ["--timeit", "--dupfiles", "--dup_minsize=0", "/home/anand"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+        }        
     ]
 }
